@@ -1,0 +1,107 @@
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { DocumentList } from '@/components/DocumentList';
+import { UploadForm } from '@/components/UploadForm';
+import { TrendingUp, FileText, Upload, Eye } from 'lucide-react';
+
+export default function InvestorDashboard() {
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const onUploadSuccess = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
+
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <TrendingUp className="h-8 w-8 text-primary" />
+            Investor Dashboard
+          </h1>
+          <p className="text-muted-foreground">Access investment documents and manage your portfolio</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Investment Docs</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">Available</div>
+            <p className="text-xs text-muted-foreground">
+              Access exclusive investment documents
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Upload Files</CardTitle>
+            <Upload className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">Enabled</div>
+            <p className="text-xs text-muted-foreground">
+              Upload private investment files
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Access Level</CardTitle>
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">Investment+</div>
+            <p className="text-xs text-muted-foreground">
+              View investment & public documents
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Tabs defaultValue="documents" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="documents">Investment Documents</TabsTrigger>
+          <TabsTrigger value="upload">Upload Document</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="documents">
+          <DocumentList refreshTrigger={refreshTrigger} />
+        </TabsContent>
+
+        <TabsContent value="upload">
+          <UploadForm onUploadSuccess={onUploadSuccess} />
+        </TabsContent>
+      </Tabs>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Investor Resources</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="p-4 bg-gradient-to-r from-primary/10 to-accent/10">
+              <h3 className="font-semibold mb-2">Investment Reports</h3>
+              <p className="text-sm text-muted-foreground">
+                Access quarterly and annual investment reports with detailed analytics.
+              </p>
+            </Card>
+            
+            <Card className="p-4 bg-gradient-to-r from-accent/10 to-primary/10">
+              <h3 className="font-semibold mb-2">Due Diligence</h3>
+              <p className="text-sm text-muted-foreground">
+                Review due diligence documents and compliance materials.
+              </p>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

@@ -1,0 +1,90 @@
+type UserRole = variant {
+  Admin;
+  Investor;
+  Business;
+  Guest;
+};
+
+type AccessLevel = variant {
+  Public;
+  Investment;
+  Business;
+  Private;
+};
+
+type UserProfile = record {
+  principal: principal;
+  role: UserRole;
+  display_name: opt text;
+  email: opt text;
+  created_at: nat64;
+  updated_at: nat64;
+};
+
+type DocumentMetadata = record {
+  id: text;
+  name: text;
+  description: opt text;
+  file_type: text;
+  size: nat64;
+  owner: principal;
+  access_level: AccessLevel;
+  created_at: nat64;
+  updated_at: nat64;
+  tags: vec text;
+};
+
+type RegisterUserRequest = record {
+  role: UserRole;
+  display_name: opt text;
+  email: opt text;
+};
+
+type UploadDocumentRequest = record {
+  name: text;
+  description: opt text;
+  file_type: text;
+  access_level: AccessLevel;
+  data: blob;
+  tags: vec text;
+};
+
+type ApiResponse_UserProfile = record {
+  success: bool;
+  data: opt UserProfile;
+  error: opt text;
+};
+
+type ApiResponse_DocumentMetadata = record {
+  success: bool;
+  data: opt DocumentMetadata;
+  error: opt text;
+};
+
+type ApiResponse_vec_DocumentMetadata = record {
+  success: bool;
+  data: opt vec DocumentMetadata;
+  error: opt text;
+};
+
+type ApiResponse_vec_UserProfile = record {
+  success: bool;
+  data: opt vec UserProfile;
+  error: opt text;
+};
+
+type ApiResponse_blob = record {
+  success: bool;
+  data: opt blob;
+  error: opt text;
+};
+
+service : {
+  register_user: (RegisterUserRequest) -> (ApiResponse_UserProfile);
+  assign_role: (principal, UserRole) -> (ApiResponse_UserProfile);
+  upload_document: (UploadDocumentRequest) -> (ApiResponse_DocumentMetadata);
+  download_document: (text) -> (ApiResponse_blob) query;
+  list_documents: () -> (ApiResponse_vec_DocumentMetadata) query;
+  list_users: () -> (ApiResponse_vec_UserProfile) query;
+  get_user_profile: () -> (ApiResponse_UserProfile) query;
+}

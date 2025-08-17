@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "canisters": {
+    "document_manager": {
+      "type": "rust",
+      "package": "document_manager",
+      "candid": "src/document_manager/document_manager.did"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:4943",
+      "type": "ephemeral"
+    }
+  }
+}
